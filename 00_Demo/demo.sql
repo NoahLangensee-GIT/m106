@@ -1,3 +1,10 @@
 -- Das ist nur eine Demo
 
-SELECT 'Hallo von Demo';
+
+USE master;
+GO
+
+ALTER DATABASE m106 SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+GO
+DROP DATABASE m106;
+GO

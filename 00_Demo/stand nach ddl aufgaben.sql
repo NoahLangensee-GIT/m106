@@ -1,0 +1,219 @@
+USE [master]
+GO
+
+USE master;
+CREATE DATABASE m106;
+GO
+
+GO
+ALTER DATABASE [m106] SET COMPATIBILITY_LEVEL = 160
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [m106].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [m106] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [m106] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [m106] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [m106] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [m106] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [m106] SET AUTO_CLOSE ON 
+GO
+ALTER DATABASE [m106] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [m106] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [m106] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [m106] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [m106] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [m106] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [m106] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [m106] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [m106] SET  ENABLE_BROKER 
+GO
+ALTER DATABASE [m106] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [m106] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [m106] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [m106] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [m106] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [m106] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [m106] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [m106] SET RECOVERY SIMPLE 
+GO
+ALTER DATABASE [m106] SET  MULTI_USER 
+GO
+ALTER DATABASE [m106] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [m106] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [m106] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [m106] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [m106] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [m106] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+GO
+ALTER DATABASE [m106] SET QUERY_STORE = ON
+GO
+ALTER DATABASE [m106] SET QUERY_STORE (OPERATION_MODE = READ_WRITE, CLEANUP_POLICY = (STALE_QUERY_THRESHOLD_DAYS = 30), DATA_FLUSH_INTERVAL_SECONDS = 900, INTERVAL_LENGTH_MINUTES = 60, MAX_STORAGE_SIZE_MB = 1000, QUERY_CAPTURE_MODE = AUTO, SIZE_BASED_CLEANUP_MODE = AUTO, MAX_PLANS_PER_QUERY = 200, WAIT_STATS_CAPTURE_MODE = ON)
+GO
+USE [m106]
+GO
+/****** Object:  Schema [intern]    Script Date: 09.01.2025 07:50:44 ******/
+CREATE SCHEMA [intern]
+GO
+/****** Object:  Schema [verkauf]    Script Date: 09.01.2025 07:50:44 ******/
+CREATE SCHEMA [verkauf]
+GO
+/****** Object:  Table [intern].[lohnkonto]    Script Date: 09.01.2025 07:50:44 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [intern].[lohnkonto](
+	[kontoid] [int] IDENTITY(1,1) NOT NULL,
+	[iban] [varchar](50) NOT NULL,
+	[mitarbeiterid] [int] NOT NULL,
+	[gueltigab] [date] NOT NULL,
+	[gueltigbis] [date] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[kontoid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [intern].[mitarbeiter]    Script Date: 09.01.2025 07:50:44 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [intern].[mitarbeiter](
+	[mitarbeiterid] [int] IDENTITY(1,1) NOT NULL,
+	[vorname] [nvarchar](100) NULL,
+	[nachname] [nvarchar](100) NULL,
+	[geschlecht] [char](1) NOT NULL,
+	[geburtsdatum] [date] NOT NULL,
+	[anstellungsdatum] [date] NOT NULL,
+	[email] [nvarchar](254) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[mitarbeiterid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [verkauf].[bestellpositionen]    Script Date: 09.01.2025 07:50:44 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [verkauf].[bestellpositionen](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[bestellid] [int] NOT NULL,
+	[produktid] [int] NOT NULL,
+	[menge] [smallint] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [verkauf].[bestellungen]    Script Date: 09.01.2025 07:50:44 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [verkauf].[bestellungen](
+	[bestellid] [int] IDENTITY(1,1) NOT NULL,
+	[bestelldatum] [datetime] NULL,
+	[kundenid] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[bestellid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [verkauf].[kunden]    Script Date: 09.01.2025 07:50:44 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [verkauf].[kunden](
+	[kundenid] [int] IDENTITY(1,1) NOT NULL,
+	[vorname] [varchar](50) NULL,
+	[nachname] [varchar](30) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[kundenid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [verkauf].[produkte]    Script Date: 09.01.2025 07:50:44 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [verkauf].[produkte](
+	[produktid] [int] IDENTITY(1,1) NOT NULL,
+	[produktname] [varchar](100) NULL,
+	[preis] [money] NULL,
+	[energielabel] [char](1) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[produktid] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+ALTER TABLE [intern].[lohnkonto] ADD  DEFAULT ('9999-12-31') FOR [gueltigbis]
+GO
+ALTER TABLE [verkauf].[kunden] ADD  DEFAULT ('unbekannt') FOR [vorname]
+GO
+ALTER TABLE [intern].[lohnkonto]  WITH CHECK ADD  CONSTRAINT [fk_lohnkonto_mitarbeiter] FOREIGN KEY([mitarbeiterid])
+REFERENCES [intern].[mitarbeiter] ([mitarbeiterid])
+GO
+ALTER TABLE [intern].[lohnkonto] CHECK CONSTRAINT [fk_lohnkonto_mitarbeiter]
+GO
+ALTER TABLE [verkauf].[bestellpositionen]  WITH CHECK ADD  CONSTRAINT [fk_bestellpos_bestellid] FOREIGN KEY([bestellid])
+REFERENCES [verkauf].[bestellungen] ([bestellid])
+GO
+ALTER TABLE [verkauf].[bestellpositionen] CHECK CONSTRAINT [fk_bestellpos_bestellid]
+GO
+ALTER TABLE [verkauf].[bestellpositionen]  WITH CHECK ADD  CONSTRAINT [fk_bestellpos_produktid] FOREIGN KEY([produktid])
+REFERENCES [verkauf].[produkte] ([produktid])
+GO
+ALTER TABLE [verkauf].[bestellpositionen] CHECK CONSTRAINT [fk_bestellpos_produktid]
+GO
+ALTER TABLE [verkauf].[bestellungen]  WITH CHECK ADD  CONSTRAINT [fk_bestellungen_kunden] FOREIGN KEY([kundenid])
+REFERENCES [verkauf].[kunden] ([kundenid])
+GO
+ALTER TABLE [verkauf].[bestellungen] CHECK CONSTRAINT [fk_bestellungen_kunden]
+GO
+ALTER TABLE [intern].[mitarbeiter]  WITH CHECK ADD CHECK  (([geschlecht]='n' OR [geschlecht]='w' OR [geschlecht]='m'))
+GO
+ALTER TABLE [verkauf].[bestellungen]  WITH CHECK ADD CHECK  (([bestelldatum]>'2019-12-31'))
+GO
+ALTER TABLE [verkauf].[produkte]  WITH CHECK ADD CHECK  (([energielabel]='E' OR [energielabel]='D' OR [energielabel]='C' OR [energielabel]='B' OR [energielabel]='A'))
+GO
+USE [master]
+GO
+ALTER DATABASE [m106] SET  READ_WRITE 
+GO
